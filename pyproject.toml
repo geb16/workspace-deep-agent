@@ -43,6 +43,9 @@ include = ["deep_agents*"]
 addopts = "-p no:cacheprovider"
 pythonpath = ["src"]
 testpaths = ["tests"]
+filterwarnings = [
+    "ignore:The default value of `allowed_objects` will change in a future version\\..*:langchain_core._api.deprecation.LangChainPendingDeprecationWarning",
+]
 
 [tool.ruff]
 line-length = 100
