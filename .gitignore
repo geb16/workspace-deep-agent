@@ -38,3 +38,6 @@ workspace_artifacts/
 # OS-specific junk
 Thumbs.db
 .DS_Store
+
+*manual.md
+*runner.*
