@@ -194,6 +194,13 @@ class CommandPolicy:
             return None
         if self._SLASH_OPTION_RE.fullmatch(token):
             return None
+        # Keep host-absolute paths that already point inside the workspace.
+        # This avoids remapping internal temp scripts on POSIX platforms.
+        host_path = Path(token)
+        if host_path.is_absolute():
+            resolved_host_path = host_path.resolve()
+            if self._is_under_workspace(resolved_host_path):
+                return resolved_host_path
 
         rel = token.lstrip("/")
         if not rel:
