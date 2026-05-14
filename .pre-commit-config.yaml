@@ -1,0 +1,64 @@
+minimum_pre_commit_version: "4.4.0"
+default_stages: [pre-commit]
+default_install_hook_types: [pre-commit, pre-push, commit-msg]
+default_language_version:
+  python: python3.12
+fail_fast: false
+
+repos:
+  - repo: meta
+    hooks:
+      - id: check-hooks-apply
+      - id: check-useless-excludes
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-ast
+      - id: check-merge-conflict
+      - id: check-case-conflict
+      - id: check-builtin-literals
+      - id: check-docstring-first
+      - id: check-yaml
+      - id: check-toml
+      - id: check-added-large-files
+        args: ["--maxkb=1024"]
+      - id: mixed-line-ending
+        args: ["--fix=no"]
+      - id: debug-statements
+      - id: detect-private-key
+      - id: detect-aws-credentials
+        args: ["--allow-missing-credentials"]
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.12.12
+    hooks:
+      - id: ruff-check
+        args: ["--no-cache", "--fix", "--exit-non-zero-on-fix", "--output-format=concise"]
+      - id: ruff-format
+        args: ["--no-cache"]
+
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v4.3.0
+    hooks:
+      - id: conventional-pre-commit
+        stages: [commit-msg]
+
+  - repo: local
+    hooks:
+      - id: repo-quality-gate
+        name: repository quality gate
+        entry: uv run python dev_task.py precommit-check
+        language: system
+        pass_filenames: false
+        always_run: true
+        stages: [pre-push, manual]
+      - id: repo-cache-cleanup
+        name: repository cache cleanup
+        entry: uv run python dev_task.py clean
+        language: system
+        pass_filenames: false
+        always_run: true
+        stages: [pre-commit, pre-push, manual]
