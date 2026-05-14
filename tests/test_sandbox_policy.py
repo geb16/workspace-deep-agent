@@ -45,6 +45,13 @@ class CommandPolicyTests(unittest.TestCase):
         rewritten = self.policy.rewrite_for_host("python /data/run.py")
         self.assertIn(str(self.workspace), rewritten)
 
+    def test_keeps_existing_workspace_absolute_path(self) -> None:
+        """Policy should not remap host-absolute paths already in workspace."""
+        script_path = (self.workspace / ".agentbox_tmp" / "script.py").resolve()
+        script_path.parent.mkdir(parents=True, exist_ok=True)
+        rewritten = self.policy.rewrite_for_host(f'python "{script_path.as_posix()}"')
+        self.assertIn(script_path.as_posix(), rewritten)
+
     def test_executes_python_heredoc_on_windows(self) -> None:
         """Backend should translate heredoc snippets to temporary scripts."""
         env = dict(os.environ)
@@ -57,7 +64,7 @@ class CommandPolicyTests(unittest.TestCase):
         )
         command = "python - <<'PY'\nprint('ok-heredoc')\nPY"
         result = backend.execute(command)
-        self.assertEqual(result.exit_code, 0)
+        self.assertEqual(result.exit_code, 0, msg=result.output)
         self.assertIn("ok-heredoc", result.output)
 
 
