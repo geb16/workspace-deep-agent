@@ -2,6 +2,10 @@
 
 Production-grade Deep Agents workspace app with a guarded local shell backend, Streamlit UI, and GitHub-ready quality gates.
 
+> [!WARNING]
+> This workspace agent executes shell commands and can create, modify, move, or delete files in the configured workspace.  
+> Even with policy guardrails, treat it as a powerful automation tool and use it only in trusted, isolated development environments (for example, a disposable VM/container or a dedicated non-production workspace).
+
 ## 1) Purpose
 
 This repository gives you a safe-by-default execution harness for Deep Agents:
@@ -149,6 +153,7 @@ Pipeline behavior:
 
 - Do not commit `.env`.
 - Keep secrets only in local `.env` or platform secret managers.
+- This agent can perform filesystem mutations through shell execution; do not point it at sensitive or production directories.
 - Cache hygiene is enforced:
 - `pytest` cache provider disabled.
 - Ruff runs with `--no-cache`.
