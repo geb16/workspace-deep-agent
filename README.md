@@ -174,3 +174,14 @@ Set both `SLACK_USER_TOKEN` and valid `SLACK_CHANNEL_ID`.
 
 - Command blocked by policy:
 Review the guardrails in `src/deep_agents/sandbox.py` and adjust only with explicit risk review.
+
+## 13) Acknowledgment
+
+This project is built on top of the LangChain Deep Agents ecosystem. Credit to the LangChain team and contributors for the Deep Agents SDK, patterns, and documentation that informed this implementation.
+
+## 14) Reference
+
+- LangChain Deep Agents Overview: https://docs.langchain.com/oss/python/deepagents/overview
+- LangChain Deep Agents Quickstart: https://docs.langchain.com/oss/python/deepagents/quickstart
+- LangChain Deep Agents API Reference (Python): https://reference.langchain.com/python/deepagents/
+- Deep Agents GitHub Repository: https://github.com/langchain-ai/deepagents
