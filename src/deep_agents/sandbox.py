@@ -58,11 +58,11 @@ class CommandPolicy:
         (re.compile(r"(?i)\bgit\s+reset\s+--hard\b"), "Hard reset commands are blocked."),
         (re.compile(r"(?i)\bgit\s+clean\b.*\b-f\b"), "Destructive git clean is blocked."),
     )
-    _PATH_TOKEN_RE = re.compile(r'(?:"([^"]+)"|\'([^\']+)\'|(\S+))')
-    _ABS_WIN_PATH_RE = re.compile(r"(?i)^[A-Z]:[\\/]")
-    _SLASH_OPTION_RE = re.compile(r"^/[A-Za-z0-9][A-Za-z0-9_-]*$")
-    _ENV_REF_RE = re.compile(r"(?i)\$(?:OPENAI|SLACK|AZURE|AWS)_[A-Z0-9_]+")
-    _PARENT_TRAVERSAL_RE = re.compile(r"(^|[\\/])\.\.([\\/]|$)")
+    _PATH_TOKEN_RE = re.compile(r'(?:"([^"]+)"|\'([^\']+)\'|(\S+))') # Matches quoted or unquoted tokens that may contain paths.
+    _ABS_WIN_PATH_RE = re.compile(r"(?i)^[A-Z]:[\\/]") # Matches absolute Windows paths like C:\ or D:/
+    _SLASH_OPTION_RE = re.compile(r"^/[A-Za-z0-9][A-Za-z0-9_-]*$") # Matches tokens that look like /option which should not be treated as paths.
+    _ENV_REF_RE = re.compile(r"(?i)\$(?:OPENAI|SLACK|AZURE|AWS)_[A-Z0-9_]+") # Matches environment variable references that may contain secrets.
+    _PARENT_TRAVERSAL_RE = re.compile(r"(^|[\\/])\.\.([\\/]|$)") # Matches parent directory traversal patterns like ../ or ..\
 
     def __init__(self, workspace_root: Path) -> None:
         """Initialize a policy scoped to a workspace root.
